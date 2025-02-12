@@ -24,6 +24,7 @@ const App = () => {
         {/* Page Content */}
         <div className="flex-1 p-6 bg-gray-100">
           <Routes>
+          
             <Route path="/career"element={<Career/>} />
             <Route path="/blogs"element={<BlogDisplay/>} />
             <Route path="/inbox" element={<div>Inbox Content</div>} />

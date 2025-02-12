@@ -110,7 +110,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',  # MySQL backend
         'NAME': 'webdb',         # Database name
         'USER': 'root',                  # MySQL username
-        'PASSWORD': '12345',          # MySQL password
+        'PASSWORD': 'Zenx@2003',          # MySQL password
         'HOST': 'localhost',                  # Host (localhost for local MySQL)
         'PORT': '3306',                       # MySQL port (default is 3306)
     }
