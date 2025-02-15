@@ -65,35 +65,34 @@ const CompanyInfo = () => {
       {/* Video Background */}
       <div className="absolute top-0 left-0 w-full h-screen overflow-hidden">
         <video autoPlay loop muted className="w-full h-full object-cover">
-          <source src={videoBg} type="video/mp4" />
-          Your browser does not support the video tag.
+         <source src={videoBg} type="video/mp4" />
+         Your browser does not support the video tag.
         </video>
 
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 w-full h-full"></div>
-      </div>
+  {/* Dark Overlay */}
+        <div div className="absolute inset-0 w-full h-full bg-black/40"></div>
+        </div>
 
-      {/* Content Over Video */}
-      <div className="relative z-10 flex flex-col items-center justify-center h-screen text-white text-center px-4">
-        <h1 className="text-4xl md:text-6xl font-extrabold">
-          Welcome to Our Company
+        {/* Content Over Video */}
+        <div className="relative z-10 flex flex-col items-center justify-center h-screen text-white text-center px-6 md:px-10">
+        <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold leading-tight">
+            Welcome to Our Company
         </h1>
-        <p className="mt-4 text-lg md:text-xl max-w-2xl">
-          We innovate to shape the future.
+        <p className="mt-4 text-base sm:text-lg md:text-xl max-w-2xl">
+            We innovate to shape the future.
         </p>
-      </div>
+        </div>
 
-      {/* Company Tagline Section */}
-      <div className="bg-gray-50 py-20 px-6 md:px-16 text-center shadow-lg rounded-lg">
-        <p className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-500 via-green-500 to-purple-500 text-transparent bg-clip-text uppercase tracking-wide">
-          Jazar Technology
+        {/* Company Tagline Section */}
+        <div className="bg-gray-50 py-16 px-4 sm:px-8 md:px-16 text-center shadow-lg rounded-lg">
+        <p className="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-500 via-green-500 to-purple-500 text-transparent bg-clip-text uppercase tracking-wide">
+            Jazar Technology
         </p>
-        <p className="text-lg md:text-2xl font-semibold mt-6 max-w-3xl mx-auto leading-relaxed text-transparent bg-gradient-to-r from-slate-500 via-green-500 to-sky-900 bg-clip-text">
-          "Jazar Technologies empowers businesses to innovate, streamline
-          operations, and enhance customer experiences, ensuring they lead in
-          an ever-evolving digital landscape."
+        <p className="text-base sm:text-lg md:text-2xl font-semibold mt-6 max-w-3xl mx-auto leading-relaxed text-transparent bg-gradient-to-r from-slate-500 via-green-500 to-sky-900 bg-clip-text">
+            "Jazar Technologies empowers businesses to innovate, streamline operations, and enhance customer experiences, ensuring they lead in an ever-evolving digital landscape."
         </p>
-      </div>
+        </div>
+
 
       {/* Our Services Section */}
       <div className="bg-white py-16 px-6 md:px-16 text-center">
@@ -131,7 +130,7 @@ const CompanyInfo = () => {
         <h2 className="text-3xl font-bold text-gray-800 mb-10 text-center">
           Industries We Serve
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 text-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 text-center">
           {industries.map((industry, index) => (
             <div
               key={index}
@@ -143,10 +142,11 @@ const CompanyInfo = () => {
               </div>
 
               {/* Industry Title */}
-              <h3 className="text-xl font-semibold text-gray-800 py-4">{industry.title}</h3>
+              <h3 className="text-xl font-semibold text-gray-800 py-3 sm:py-4">{industry.title}</h3>
+
 
               {/* Description */}
-              <div className="px-4 pb-6 text-sm text-slate-600">
+              <div className="px-4 pb-6 text-sm sm:text-base text-slate-600">
                 {industry.description}
               </div>
 
@@ -165,22 +165,24 @@ const CompanyInfo = () => {
         <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
           Our Mission
         </h2>
-        <div className="flex flex-col md:flex-row justify-between items-center space-x-8">
-          <div className="w-full px-2 md:w-1/2 h-[300px]">
-            <img src={missionImage} alt="Mission" className="w-full h-full object-cover" />
+        <div className="flex flex-col md:flex-row justify-between items-center md:space-x-8">
+            <div className="w-full md:w-1/2 h-[300px] order-1">
+            <img src={missionImage} alt="Mission" className="w-full h-full object-cover rounded-lg" />
+
           </div>
           <div className="w-full md:w-1/2 text-left mt-12 order-2 md:order-1">
-            <p className="text-lg space-y-6 mb-4">
-              Innovate and Empower: Leverage cutting-edge technology to create innovative solutions.
+            <p className="text-lg mb-4">
+                <strong>Innovate and Empower:</strong> Leverage cutting-edge technology to create innovative solutions.
+            </p>
+
+            <p className="text-lg mb-4">
+              <strong>Deliver Excellence:</strong> Provide high-quality, reliable, and efficient services across software development, data analysis, and cloud solutions.
             </p>
             <p className="text-lg mb-4">
-              Deliver Excellence: Provide high-quality, reliable, and efficient services across software development, data analysis, and cloud solutions.
+             <strong> Foster Growth:</strong> Cultivate a collaborative and growth-oriented environment that supports continuous learning and professional development.
             </p>
             <p className="text-lg mb-4">
-              Foster Growth: Cultivate a collaborative and growth-oriented environment that supports continuous learning and professional development.
-            </p>
-            <p className="text-lg mb-4">
-              Prioritize Integrity: Uphold the highest standards of integrity and transparency in all our interactions.
+            <strong> Prioritize Integrity:</strong> Uphold the highest standards of integrity and transparency in all our interactions.
             </p>
           </div>
         </div>
@@ -189,22 +191,22 @@ const CompanyInfo = () => {
         <h2 className="text-3xl font-bold text-gray-800 mt-16 mb-8 text-center">
           Our Vision
         </h2>
-        <div className="flex flex-col md:flex-row justify-between items-center space-x-8">
-          <div className="w-full md:w-1/2 h-[300px]">
-            <img src={visionImage} alt="Vision" className="w-full h-full object-cover" />
+        <div className="flex flex-col md:flex-row justify-between items-center md:space-x-8">
+            <div className="w-full md:w-1/2 h-[300px] order-1 md:order-none mb-6 md:mb-0">
+            <img src={visionImage} alt="Mission" className="w-full h-full object-cover rounded-lg" />
           </div>
-          <div className="w-full md:w-1/2 mb-8 md:mb-0 text-left">
-            <p className="text-lg mb-4">
-              Transform the Future with Technology: Lead the way in technological innovation by creating solutions.
+          <div className="w-full md:w-1/2 mb-8 md:mb-0 text-left order-2 md:order-none">
+          <p className="text-lg mb-4">
+            <strong>Transform the Future with Technology:</strong> Lead the way in technological innovation by creating solutions.
             </p>
             <p className="text-lg mb-4">
-              Be a Trusted Partner: Establish ourselves as a go-to partner for businesses seeking cutting-edge technology solutions.
+            <strong>Be a Trusted Partner:</strong> Establish ourselves as a go-to partner for businesses seeking cutting-edge technology solutions.
             </p>
             <p className="text-lg mb-4">
-              Foster Sustainable Growth: Drive sustainable growth for our clients and ourselves by continuously adapting to emerging technologies.
+            <strong>Foster Sustainable Growth:</strong> Drive sustainable growth for our clients and ourselves by continuously adapting to emerging technologies.
             </p>
             <p className="text-lg mb-4">
-              Empower People and Organizations: Enhance the capabilities of individuals and organizations.
+            <strong>Empower People and Organizations:</strong> Enhance the capabilities of individuals and organizations.
             </p>
           </div>
         </div>
