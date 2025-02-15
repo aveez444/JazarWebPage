@@ -58,7 +58,9 @@ const CompanyInfo = () => {
   const [selectedService, setSelectedService] = useState(null);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden">
+    <div className="relative w-full overflow-x-hidden">
+
+
       {/* Top Navigation */}
       <TopNav />
 
@@ -220,17 +222,15 @@ const CompanyInfo = () => {
         <p className="text-lg mb-8 text-gray-600">
           Your intention, our mission. Connect with us and let's bring ideas to life.
         </p>
-        <div className="flex flex-col md:flex-row justify-between items-center space-x-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Text Section */}
-          <div className="w-full md:w-1/3 h-[300px] bg-gray-300">
+          <div className="w-full h-[250px] sm:h-[300px] md:h-[350px] bg-gray-300 rounded-lg overflow-hidden">
             <img src={aiImage} alt="AI Image" className="w-full h-full object-cover" />
           </div>
-          
-
-          <div className="w-full md:w-1/3 h-[300px] bg-gray-300">
+          <div className="w-full h-[250px] sm:h-[300px] md:h-[350px] bg-gray-300 rounded-lg overflow-hidden">
             <img src={invvoImage} alt="Your Image" className="w-full h-full object-cover" />
           </div>
-          <div className="w-full md:w-1/3 h-[300px] bg-gray-300">
+          <div className="w-full h-[250px] sm:h-[300px] md:h-[350px] bg-gray-300 rounded-lg overflow-hidden">
             <img src={teamImage} alt="Team Image" className="w-full h-full object-cover" />
           </div>
 
@@ -247,8 +247,8 @@ const CompanyInfo = () => {
               <li><a href="/services" className="hover:underline">Services</a></li>
               <li><a href="/faqs" className="hover:underline">FAQs</a></li>
               <li><a href="/contact" className="hover:underline">Contact Us</a></li>
-              <li><a href="/carrer" className="hover:underline">Carrer</a></li>
-              <li><a href="/blog" className="hover:underline">Blog</a></li>
+              <li><a href="/career" className="hover:underline">Carrer</a></li>
+              <li><a href="/blogs" className="hover:underline">Blog</a></li>
             </ul>
           </div>
           <div>

@@ -30,8 +30,8 @@ const TopNav = () => {
 
         {/* Desktop Navigation - Hidden on Mobile */}
         <div className="hidden md:flex space-x-6">
-          <Link to="/home" className="hover:text-green-400 transition">Home</Link>
-          <Link to="/service" className="hover:text-green-400 transition">Services</Link>
+          <Link to="/" className="hover:text-green-400 transition">Home</Link>
+          <Link to="/services" className="hover:text-green-400 transition">Services</Link>
           <Link to="/faq" className="hover:text-green-400 transition">FAQs</Link>
           <Link to="/contact" className="hover:text-green-400 transition">Contact</Link>
           <Link to="/career" className="hover:text-green-400 transition">Career</Link>
@@ -63,8 +63,8 @@ const TopNav = () => {
       {/* Mobile Navigation Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-16 left-0 w-full bg-gray-900 text-white shadow-lg py-4 px-6 flex flex-col space-y-4">
-          <Link to="/home" className="hover:text-green-400 transition" onClick={toggleMobileMenu}>Home</Link>
-          <Link to="/service" className="hover:text-green-400 transition" onClick={toggleMobileMenu}>Services</Link>
+          <Link to="/" className="hover:text-green-400 transition" onClick={toggleMobileMenu}>Home</Link>
+          <Link to="/services" className="hover:text-green-400 transition" onClick={toggleMobileMenu}>Services</Link>
           <Link to="/faq" className="hover:text-green-400 transition" onClick={toggleMobileMenu}>FAQs</Link>
           <Link to="/contact" className="hover:text-green-400 transition" onClick={toggleMobileMenu}>Contact</Link>
           <Link to="/career" className="hover:text-green-400 transition" onClick={toggleMobileMenu}>Career</Link>
