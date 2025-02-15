@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import { Icon } from '@iconify/react';
 import softwareImage from '../assets/software.png';
 import pythonImage from '../assets/python.png.webp';
@@ -10,6 +10,8 @@ import itConsultingImage from '../assets/image5.png';  // Assuming you have an i
 import aiImage from '../assets/ai.png';  // Assuming you have an aiImage
 import TopNav from '../Components/topnav'; // Importing TopNav
 import Footer from '../components/footer'; // Import Footer Component
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
 
 const services = [
   {
@@ -98,36 +100,86 @@ const services = [
 ];
 
 const ServiceSection = () => {
+  const scrollRef = useRef(null);
+
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 300, behavior: "smooth" });
+    }
+  };
+
   return (
-    <div>
-      <TopNav /> {/* Importing TopNav */}
-      
-      {/* Scrollable Section */}
-      <div className="py-16 px-6 md:px-16">
-        <h2 className="text-4xl font-extrabold text-gray-800 text-center mb-10">Our Services</h2>
-        
-        {/* Horizontal Scrolling Container */}
-        <div className="overflow-x-auto flex space-x-8 ">
-          {services.map((service, index) => (
-            <div key={index} className="relative bg-white rounded-lg shadow-xl p-8 min-w-[300px] max-w-[350px] border-2 border-gray-200 hover:transform  hover:scale-105 hover:shadow-2xl transition-all">
-              <div className="flex justify-center mb-4">
-                <img src={service.image} alt={service.title} className="w-16 h-16 object-cover rounded-full border-4 border-blue-500" />
+    <div className="min-h-screen bg-gray-50 overflow-hidden">
+      <TopNav />
+
+      {/* Services Section */}
+      <div className="pt-32 pb-16 px-4 md:px-8 lg:px-16">
+        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 text-center mb-10">
+          Our Services
+        </h2>
+
+        <div className="relative max-w-7xl mx-auto">
+          {/* Left Navigation Button */}
+          <button
+            onClick={scrollLeft}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white p-3 rounded-full shadow-lg hover:bg-gray-100 transition-all"
+          >
+            <ChevronLeft className="w-6 h-6 text-gray-600" />
+          </button>
+
+          {/* Services Scrollable Container */}
+          <div
+            ref={scrollRef}
+            className="flex overflow-x-auto space-x-6 scrollbar-hidden snap-x scroll-smooth p-4"
+          >
+            {services.map((service, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-lg shadow-xl p-6 min-w-[300px] max-w-[350px] border border-gray-200 hover:shadow-2xl transition-all snap-center"
+              >
+                <div className="flex justify-center mb-4">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="w-16 h-16 object-cover rounded-full border-4 border-blue-500"
+                  />
+                </div>
+                <h3 className="text-lg md:text-2xl font-semibold text-gray-800 mb-3 text-center">
+                  {service.title}
+                </h3>
+                <p className="text-gray-600 text-sm md:text-base text-center mb-3">
+                  {service.description}
+                </p>
+                {/* Service Details */}
+                <ul className="list-disc text-gray-700 text-sm md:text-base px-4">
+                  {service.details.map((detail, idx) => (
+                    <li key={idx} className="mb-2">{detail}</li>
+                  ))}
+                </ul>
               </div>
-              <h3 className="text-2xl font-semibold text-gray-800 mb-4 text-center">{service.title}</h3>
-              <p className="text-gray-600 text-center mb-4">{service.description}</p>
-              <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                {service.details.map((detail, idx) => (
-                  <li key={idx} className="text-gray-700 mb-2">{detail}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* Right Navigation Button */}
+          <button
+            onClick={scrollRight}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white p-3 rounded-full shadow-lg hover:bg-gray-100 transition-all"
+          >
+            <ChevronRight className="w-6 h-6 text-gray-600" />
+          </button>
         </div>
       </div>
-      
-      <Footer /> {/* Rendering the Footer Component */}
+
+      <Footer />
     </div>
   );
 };
+
 
 export default ServiceSection;
