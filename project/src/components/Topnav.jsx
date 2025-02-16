@@ -21,11 +21,14 @@ const TopNav = () => {
       <div className="flex items-center justify-between w-full max-w-screen-xl mx-auto px-8">
         {/* Left Section: Logo */}
         <div className="flex items-center space-x-3">
+        <Link to="/">
           <img
             src={logoImage} 
             alt="Logo"
-            className="h-12 w-18 rounded-full bg-white p-1"
+            className="h-12 w-18 rounded-full bg-white p-1 cursor-pointer"
           />
+        </Link>
+
         </div>
 
         {/* Desktop Navigation - Hidden on Mobile */}

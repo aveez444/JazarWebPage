@@ -8,7 +8,7 @@ import webImage from '../assets/image4.png';  // Assuming you have a webImage
 import mobileAppImage from '../assets/vision.png';  // Assuming you have a mobileAppImage
 import itConsultingImage from '../assets/image5.png';  // Assuming you have an itConsultingImage
 import aiImage from '../assets/ai.png';  // Assuming you have an aiImage
-import TopNav from '../Components/topnav'; // Importing TopNav
+import TopNav from "../components/Topnav"; // Importing TopNav
 import Footer from '../components/footer'; // Import Footer Component
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios"; // Ensure axios is imported
-import TopNav from "../Components/topnav"; // Import TopNav
+import TopNav from "../components/Topnav"; // Import TopNav
 import Footer from "../components/footer"; // Import Footer Component
 import contactImage from "../assets/contact.jpg"; // Import image for the contact section
 

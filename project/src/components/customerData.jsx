@@ -25,7 +25,7 @@ const CustomerList = () => {
       <Sidebar />
 
       {/* Content Section */}
-      <div className="ml-64 flex-1 p-6 bg-white">
+      <div className="flex-1 p-6">
         <h1 className="text-3xl font-semibold text-center mb-8 text-black">
           Inquire info
         </h1>

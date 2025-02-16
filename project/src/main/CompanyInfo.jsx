@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import TopNav from "../Components/topnav"; // Import TopNav component
+import TopNav from "../components/Topnav";// Import TopNav component
 import videoBg from "../assets/videoBg.mp4.mp4"; // Import the video file
 import pythonImage from "../assets/python.png.webp";
 import softwareImage from "../assets/software.png";

@@ -58,7 +58,7 @@ const BlogForm = () => {
       <Sidebar />
 
       {/* Main Content */}
-      <div className="ml-64 flex-1 p-6">
+      <div className="flex-1 p-6">
         <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-4xl mx-auto">
           <h2 className="text-4xl font-semibold text-gray-800 mb-6">Create Blog Post</h2>
 

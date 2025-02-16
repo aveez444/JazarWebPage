@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';  
-import TopNav from "../Components/topnav";
+import TopNav from "../components/Topnav";
 import careerVideo from '../assets/bgvideo2.mp4'; 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
