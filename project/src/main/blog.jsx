@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import TopNav from "../Components/topnav";
+import TopNav from "../components/Topnav";
 import Footer from "../components/footer"; // Import the Footer component
 
 const BlogDisplay = () => {
   const [blogs, setBlogs] = useState([]);
+  const [expandedBlogs, setExpandedBlogs] = useState({}); // Track expanded blogs
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -21,6 +22,14 @@ const BlogDisplay = () => {
     };
     fetchBlogs();
   }, []);
+
+  // Toggle blog expansion
+  const toggleExpand = (index) => {
+    setExpandedBlogs((prev) => ({
+      ...prev,
+      [index]: !prev[index], // Toggle the specific blog's expanded state
+    }));
+  };
 
   if (loading) {
     return (
@@ -41,6 +50,8 @@ const BlogDisplay = () => {
   return (
     <div className="bg-black text-white min-h-screen">
       <TopNav />
+      
+      {/* Page Header */}
       <div className="bg-gradient-to-b from-gray-900 to-black text-center py-24 px-8">
         <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">
           Welcome to Our Blog
@@ -51,47 +62,65 @@ const BlogDisplay = () => {
         </p>
       </div>
 
-      <div className="p-8 max-w-6xl mx-auto">
-        {blogs.map((blog, index) => (
-          <div
-            key={index}
-            className="group relative flex flex-col md:flex-row gap-8 border border-gray-800 rounded-lg p-6 mb-16 transition-all duration-300 hover:scale-105 hover:border-blue-500 hover:shadow-2xl bg-gradient-to-b from-gray-900 to-black"
-          >
-            {/* Date on the Left */}
-            <div className="w-full md:w-1/6 flex justify-start md:justify-center items-start">
-              <p className="text-lg font-bold text-blue-400">
-                {new Date(blog.date).toLocaleDateString()}
-              </p>
-            </div>
+      {/* Blog List */}
+      <div className="p-6 sm:p-8 max-w-6xl mx-auto">
+        {blogs.map((blog, index) => {
+          const isExpanded = expandedBlogs[index]; // Check if blog is expanded
+          const isLongText = blog.content.split(" ").length > 100; // Check if text is long
 
-            {/* Blog Content */}
-            <div className="w-full md:w-5/6">
-              {/* Blog Title */}
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                {blog.title}
-              </h2>
-
-              {/* Blog Image */}
+          return (
+            <div
+              key={index}
+              className="group relative flex flex-col md:flex-row gap-6 border border-gray-800 rounded-lg p-6 mb-12 transition-all duration-300 hover:scale-105 hover:border-blue-500 hover:shadow-xl bg-gradient-to-b from-gray-900 to-black"
+            >
+              {/* Blog Image (Mobile First Approach) */}
               {blog.image && (
-                <img
-                  src={`http://127.0.0.1:8000${blog.image}`}
-                  alt={blog.title}
-                  className="rounded-lg shadow-lg object-cover w-full h-auto mb-6"
-                />
+                <div className="w-full md:w-1/3">
+                  <img
+                    src={`http://127.0.0.1:8000${blog.image}`}
+                    alt={blog.title}
+                    className="rounded-lg shadow-lg object-cover w-full max-h-[250px] sm:max-h-[300px] md:max-h-[350px] mb-4 md:mb-0"
+                  />
+                </div>
               )}
 
-              {/* Blog Description */}
-              <p className="text-gray-400 text-xl leading-relaxed">
-                {blog.content}
-              </p>
+              {/* Blog Content */}
+              <div className="w-full md:w-2/3">
+                {/* Blog Title */}
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3">
+                  {blog.title}
+                </h2>
+
+                {/* Blog Date */}
+                <p className="text-sm text-blue-400 text-left">
+                  {new Date(blog.date).toLocaleDateString()}
+                </p>
+
+                {/* Blog Description */}
+                <p
+                  className={`text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed transition-all duration-300 ${
+                    isExpanded ? "line-clamp-none" : "line-clamp-10"
+                  }`}
+                >
+                  {blog.content}
+                </p>
+
+                {/* Read More Link (Only Shows if Text is Long) */}
+                {isLongText && (
+                  <button
+                    onClick={() => toggleExpand(index)}
+                    className="mt-2 text-blue-400 hover:underline text-sm md:text-base"
+                  >
+                    {isExpanded ? "Show Less" : "Read More"}
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      {/* Include the Footer */}
-      <Footer />  {/* Footer is now part of the BlogDisplay page */}
-
+      <Footer /> {/* Footer */}
     </div>
   );
 };
