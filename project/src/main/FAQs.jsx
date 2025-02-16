@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Icon } from '@iconify/react';
-import TopNav from '../Components/topnav';  // Import TopNav
-import Footer from '../components/footer';  // Import Footer Component
-import roboticVideo from '../assets/robotic.mp4'; // Import the video
+import React, { useState } from "react";
+import { Icon } from "@iconify/react";
+import { useNavigate } from "react-router-dom"; // Redirect users to Inquiry page
+import TopNav from "../components/Topnav";
+import Footer from "../components/footer"; // Import Footer Component
 
 const faqs = [
   { question: "1. What services does your IT company provide?", answer: "We offer a wide range of IT services, including software development, mobile app development, web development, IT consulting, cloud solutions, and managed IT services." },
@@ -19,58 +19,92 @@ const faqs = [
 
 const FaqPage = () => {
   const [activeIndex, setActiveIndex] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
+  // Toggle FAQs
   const handleToggle = (index) => {
-    setActiveIndex(activeIndex === index ? null : index); // Toggle answer visibility
+    setActiveIndex(activeIndex === index ? null : index);
   };
 
+  // Filter FAQs based on search
+  const filteredFaqs = faqs.filter((faq) =>
+    faq.question.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <div className="bg-gray-100 text-black mt-8 min-h-screen">
-      <TopNav />  {/* TopNav component */}
-
-      {/* Main Content Section */}
-      <div className="py-16 px-12 md:px-24 flex flex-col items-center">
+    <div className="bg-gradient-to-b from-gray-100 to-gray-200 min-h-screen text-black">
+      <TopNav /> {/* Navbar */}
+      
+      {/* Page Container */}
+      <div className="pt-24 px-4 md:px-16 flex flex-col items-center">
         
-        {/* Video Section */}
-        <div className="mb-12 w-full   ">
-          <div className="bg-gray-600 rounded-lg h-[700px]   overflow-hidden">
-            {/* Video player */}
-            <video autoPlay loop muted className="w-full h-full object-cover">
-              <source src={roboticVideo} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
-          
-        </div>
+        {/* Page Title */}
+        <h2 className="text-2xl md:text-4xl font-extrabold text-center mb-6 text-gray-900">
+          Frequently Asked Questions
+        </h2>
 
-        <h2 className="text-4xl text-black font-extrabold text-center mb-12">Frequently Asked Questions</h2>
+        {/* Search Bar */}
+        <div className="relative w-full max-w-lg mb-6">
+          <input
+            type="text"
+            placeholder="Search FAQs..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700 transition-all"
+          />
+          <Icon
+            icon="mdi:magnify"
+            className="absolute left-3 top-3 text-gray-500 text-xl"
+          />
+        </div>
 
         {/* FAQ Section */}
-        <div className="w-full max-w-screen-xl px-6 py-16 bg-gray-100">
-          <div className="space-y-6">
-            {/* FAQ Items */}
-            {faqs.map((faq, index) => (
-              <div key={index} className="bg-gray-300 rounded-lg shadow-md overflow-hidden">
-                <div
+        <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-4 md:p-6 border border-gray-200">
+          {filteredFaqs.length > 0 ? (
+            filteredFaqs.map((faq, index) => (
+              <div key={index} className="border-b border-gray-300">
+                <button
                   onClick={() => handleToggle(index)}
-                  className="flex justify-between items-center p-6 cursor-pointer hover:bg-gray-400 transition"
+                  className="w-full flex justify-between items-center p-3 md:p-4 hover:bg-gray-100 transition-all focus:outline-none"
                 >
-                  <h3 className="text-lg font-semibold">{faq.question}</h3>
+                  <span className="text-sm md:text-lg font-semibold">{faq.question}</span>
                   <Icon
                     icon={activeIndex === index ? "mdi:chevron-up" : "mdi:chevron-down"}
-                    className="text-xl"
+                    className="text-lg md:text-xl text-gray-500"
                   />
-                </div>
+                </button>
 
-                {activeIndex === index && (
-                  <div className="p-6 bg-gray-400">
-                    <p className="font-bold">{faq.answer}</p> {/* Answer in bold */}
-                  </div>
-                )}
+                {/* Smooth Transition for Answers */}
+                <div
+                  className={`overflow-hidden transition-all duration-300 ${
+                    activeIndex === index ? "max-h-40 p-3 md:p-4 bg-gray-50" : "max-h-0 p-0"
+                  }`}
+                >
+                  <p className="text-sm md:text-base text-gray-700">{faq.answer}</p>
+                </div>
               </div>
-            ))}
-          </div>
+            ))
+          ) : (
+            <p className="text-gray-600 text-center">No results found.</p>
+          )}
         </div>
+
+        {/* "Still Have Questions?" Section */}
+        <div className="text-center mt-6 w-full max-w-xl mx-auto bg-white shadow-md p-5 md:p-6 rounded-lg border border-gray-300">
+          <h3 className="text-lg md:text-2xl font-semibold text-gray-800 flex items-center justify-center gap-2">
+            <Icon icon="mdi:help-circle-outline" className="text-lg md:text-2xl text-gray-700" />
+            Still have questions?
+          </h3>
+          <p className="text-sm md:text-base text-gray-600 mt-2">Let us know how we can help you.</p>
+          <button
+            onClick={() => navigate("/inquiry")}
+            className="mt-3 md:mt-4 px-4 md:px-6 py-2 md:py-3 bg-black text-white rounded-lg text-sm md:text-lg font-semibold hover:bg-gray-800 transition-all"
+          >
+            Contact Us
+          </button>
+        </div>
+
       </div>
 
       <Footer /> {/* Footer component */}
