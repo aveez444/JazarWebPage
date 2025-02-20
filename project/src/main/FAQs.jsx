@@ -98,7 +98,7 @@ const FaqPage = () => {
           </h3>
           <p className="text-sm md:text-base text-gray-600 mt-2">Let us know how we can help you.</p>
           <button
-            onClick={() => navigate("/inquiry")}
+            onClick={() => navigate("/contact")}
             className="mt-3 md:mt-4 px-4 md:px-6 py-2 md:py-3 bg-black text-white rounded-lg text-sm md:text-lg font-semibold hover:bg-gray-800 transition-all"
           >
             Contact Us
