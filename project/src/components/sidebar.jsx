@@ -16,12 +16,9 @@ const Sidebar = () => {
     { name: "Dashboard", icon: <Home size={20} />, path: "/" },
     { name: "Inquiry", icon: <Briefcase size={20} />, path: "/contact-list" },
     { name: "Jobs", icon: <Briefcase size={20} />, path: "/jobs" },
-    { name: "Blog", icon: <FileText size={20} />, path: "/blogstruc" },
+    { name: "Create Blog", icon: <FileText size={20} />, path: "/blogstruc" },
     { name: "JobManage", icon: <Settings size={20} />, path: "/jobmanage" },
-    { name: "Help", icon: <HelpCircle size={20} />, path: "/help" },
-    { name: "Calendar & Todos", icon: <Calendar size={20} />, path: "/calendar" },
-    { name: "Candidates", icon: <Users size={20} />, path: "/candidates" },
-    { name: "Employee", icon: <Users size={20} />, path: "/employee" },
+    { name: "Blog Update", icon: <FileText size={20} />, path: "/blog-manage" },
   ];
 
   return (
