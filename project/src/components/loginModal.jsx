@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
-const LoginModal = ({ closeModal }) => {
+// Option 1: Modal with subtle background blur
+const LoginModal = ({ closeModal, position = { top: '50%', left: '50%' }, blurStyle = "subtle" }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -19,15 +20,12 @@ const LoginModal = ({ closeModal }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Reset error
+    setError("");
   
     try {
       const response = await axios.post("http://127.0.0.1:8000/login/", formData);
-  
-      // Save the access token in localStorage
       localStorage.setItem("access_token", response.data.access);
   
-      // Redirect admin or normal user based on the response
       if (response.data.is_admin) {
         window.location.href = "/jobmanage";
       } else {
@@ -38,14 +36,12 @@ const LoginModal = ({ closeModal }) => {
     }
   };
   
-
   const handleGoogleLogin = async (googleData) => {
     try {
       const response = await axios.post("http://127.0.0.1:8000/google-login/", {
         google_token: googleData.credential,
       });
 
-      // Check if login is successful and if user is admin
       if (response.data.is_admin) {
         window.location.href = "/jobmanage";
       } else {
@@ -56,13 +52,69 @@ const LoginModal = ({ closeModal }) => {
     }
   };
 
+  // Different background blur styles
+  const getBackgroundStyle = () => {
+    switch (blurStyle) {
+      case "none":
+        return {};
+      case "subtle":
+        return {
+          backdropFilter: 'blur(3px)',
+          backgroundColor: 'rgba(0, 0, 0, 0.2)'
+        };
+      case "medium":
+        return {
+          backdropFilter: 'blur(6px)',
+          backgroundColor: 'rgba(0, 0, 0, 0.4)'
+        };
+      case "strong":
+        return {
+          backdropFilter: 'blur(12px)',
+          backgroundColor: 'rgba(0, 0, 0, 0.6)'
+        };
+      case "light":
+        return {
+          backdropFilter: 'blur(4px)',
+          backgroundColor: 'rgba(255, 255, 255, 0.4)'
+        };
+      default:
+        return {
+          backdropFilter: 'blur(3px)',
+          backgroundColor: 'rgba(0, 0, 0, 0.2)'
+        };
+    }
+  };
+
   return (
-    <div>
+    <>
+      {/* Semi-transparent background overlay with blur */}
+      <div 
+        className="fixed inset-0 z-40"
+        style={getBackgroundStyle()}
+        onClick={closeModal}
+      />
+
       {/* Modal */}
-      <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center backdrop-blur-md">
-        <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-sm relative">
+      <div 
+        className="fixed z-50"
+        style={{
+          top: position.top,
+          left: position.left,
+          transform: 'translate(-50%, -50%)'
+        }}
+      >
+        <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-sm relative border border-gray-200">
+          {/* Close Button */}
+          <button 
+            onClick={closeModal} 
+            className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600"
+          >
+            ✕
+          </button>
+          
           <h2 className="text-xl font-semibold text-center text-gray-700 mb-4">Log into your account</h2>
           {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+          
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email Input */}
             <div>
@@ -118,19 +170,9 @@ const LoginModal = ({ closeModal }) => {
               />
             </GoogleOAuthProvider>
           </form>
-
-          {/* Close and Back Button */}
-          <div className="absolute top-2 right-2">
-            <button onClick={closeModal} className="text-black hover:text-gray-700 mr-2">
-              X
-            </button>
-            <button onClick={closeModal} className="text-gray-600 hover:text-gray-700">
-              Back
-            </button>
-          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
