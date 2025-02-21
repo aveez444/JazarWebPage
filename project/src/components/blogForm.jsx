@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import Sidebar from "./sidebar"; // Import Sidebar component
+import Sidebar from "./sidebar";
 import axios from "axios";
+import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill";
 
 const BlogForm = () => {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState(""); // State for content (Blog Description)
+  const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
-  const [date, setDate] = useState(""); // State for date input
+  const [date, setDate] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(""); // State for message feedback
+  const [message, setMessage] = useState("");
 
   const handleImageUpload = (e) => {
     setImage(e.target.files[0]);
@@ -31,7 +33,7 @@ const BlogForm = () => {
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data", // Ensure the request includes the file
+            "Content-Type": "multipart/form-data",
           },
         }
       );
@@ -58,8 +60,8 @@ const BlogForm = () => {
       <Sidebar />
 
       {/* Main Content */}
-      <div className="flex-1 p-6">
-        <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-4xl mx-auto">
+      <div className="flex-1 p-6 overflow-y-auto">
+        <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-4xl mx-auto mb-12">
           <h2 className="text-4xl font-semibold text-gray-800 mb-6">Create Blog Post</h2>
 
           {/* Message Alert */}
@@ -76,8 +78,8 @@ const BlogForm = () => {
           {/* Blog Form */}
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Image Upload */}
-            <div className="flex justify-between items-center">
-              <div className="w-1/2">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div className="w-full sm:w-1/2">
                 <label className="block text-gray-700 font-medium mb-2">Upload Image</label>
                 <input
                   type="file"
@@ -89,7 +91,7 @@ const BlogForm = () => {
 
               <button
                 type="submit"
-                className="bg-yellow-500 text-white px-6 py-2 rounded-lg shadow-md hover:bg-yellow-200 transition duration-300"
+                className="bg-yellow-500 text-white px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition duration-300 mt-4 sm:mt-0"
                 disabled={loading}
               >
                 {loading ? "Submitting..." : "Submit Blog"}
@@ -122,14 +124,25 @@ const BlogForm = () => {
             </div>
 
             {/* Blog Content (Description) */}
-            <div>
+            <div className="w-full">
               <label className="block text-gray-700 font-medium mb-2">Blog Description</label>
-              <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder="Write your blog content here..."
-                className="w-full h-60 border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              />
+              <div className="quill-container" style={{ minHeight: "300px" }}>
+                <ReactQuill
+                  value={content}
+                  onChange={setContent}
+                  placeholder="Write your blog content here..."
+                  theme="snow"
+                  style={{ height: "250px" }}
+                  modules={{
+                    toolbar: [
+                      [{ header: [1, 2, 3, false] }],
+                      ['bold', 'italic', 'underline', 'link'],
+                      [{ list: 'ordered' }, { list: 'bullet' }],
+                      ['clean']
+                    ]
+                  }}
+                />
+              </div>
             </div>
           </form>
         </div>

@@ -7,7 +7,7 @@ import BlogDisplay from "./main/blog";
 import JobList from "./components/JobList";
 import BlogList from "./components/BlogList";
 import AdminJobManagement from "./components/jobmanage";
-import BlogForm from "./components/BlogForm";
+import BlogForm from "./components/blogForm";
 import Footer from "./components/footer";
 import ContactPage from "./main/contactPage";
 import FaqPage from "./main/FAQs";
