@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import Sidebar from "../components/sidebar"; // Import Sidebar
+import Sidebar from "../components/sidebar";
 
 const AdminJobManagement = () => {
   const [jobs, setJobs] = useState([]);
-  const [applications, setApplications] = useState([]); // State to hold the job applications
+  const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
-  const [selectedCV, setSelectedCV] = useState(null); // State to store the selected CV URL
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCV, setSelectedCV] = useState(null);
 
   // Fetch jobs
   useEffect(() => {
@@ -17,9 +17,7 @@ const AdminJobManagement = () => {
       try {
         const token = localStorage.getItem("access_token");
         const response = await axios.get("http://127.0.0.1:8000/list-jobs/", {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
         setJobs(response.data);
       } catch (err) {
@@ -44,7 +42,7 @@ const AdminJobManagement = () => {
     fetchApplications();
   }, []);
 
-  // ✅ Handle Excel Download (Exports ALL job applications)
+  // Handle Excel Download
   const handleDownloadExcel = async () => {
     try {
       const response = await axios.get("http://127.0.0.1:8000/export-excel/", {
@@ -73,11 +71,8 @@ const AdminJobManagement = () => {
     try {
       const token = localStorage.getItem("access_token");
       await axios.delete(`http://127.0.0.1:8000/delete-job/${jobId}/`, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
-
       setJobs(jobs.filter((job) => job.id !== jobId));
       alert("Job deleted successfully!");
     } catch (err) {
@@ -85,9 +80,9 @@ const AdminJobManagement = () => {
     }
   };
 
-  // Open Modal to view CV
+  // Handle View CV in Modal
   const openCVModal = (cvUrl) => {
-    setSelectedCV(cvUrl);
+    setSelectedCV(`http://127.0.0.1:8000${decodeURIComponent(cvUrl)}`);
     setIsModalOpen(true);
   };
 
@@ -99,62 +94,70 @@ const AdminJobManagement = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gray-900 text-white">
-        <div className="text-lg font-semibold">Loading...</div>
+      <div className="flex min-h-screen bg-white">
+        <Sidebar />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#1a1f2e] mb-4"></div>
+            <div className="text-[#1a1f2e] text-lg font-semibold">Loading...</div>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gray-900 text-white">
-        <div className="text-lg font-semibold">{error}</div>
+      <div className="flex min-h-screen bg-white">
+        <Sidebar />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-[#1a1f2e] text-lg font-semibold">{error}</div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-100 text-gray-900 min-h-screen flex">
-      {/* Sidebar */}
-      <Sidebar />  {/* Include Sidebar here */}
-
-      {/* Main Content */}
-      <div className="flex-1 p-6">
+    <div className="flex min-h-screen bg-white">
+      <Sidebar />
+      
+      <div className="flex-1">
         {/* Header */}
-        <div className="text-center py-12 px-6 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-lg shadow-md">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-white">Admin Job Management</h1>
-          <p className="text-gray-200 text-lg max-w-3xl mx-auto">
+        <div className="bg-[#1a1f2e] text-white py-8 px-6">
+          <h1 className="text-3xl md:text-4xl font-bold text-center">Admin Job Management</h1>
+          <p className="text-gray-300 text-center mt-2 max-w-3xl mx-auto">
             Manage your posted jobs. Delete or update job listings as needed.
           </p>
         </div>
 
-        {/* Jobs List */}
+        {/* Main Content */}
         <div className="p-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Jobs Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             {jobs.map((job) => (
               <div
                 key={job.id}
-                className="bg-white p-6 rounded-lg shadow-lg border-2 border-gray-200 hover:transform hover:scale-105 hover:shadow-2xl transition-all"
+                className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300"
               >
-                <h2 className="text-2xl font-bold text-blue-600 mb-4">{job.title}</h2>
-                <p className="text-sm text-gray-500 mb-4">{job.description}</p>
-                <p className="text-sm text-gray-600 mb-4">Location: {job.location}</p>
-                <p className="text-sm text-gray-600 mb-4">Eligibility: {job.eligibility}</p>
-
-                {/* Buttons */}
-                <div className="flex justify-between mt-4">
-                  {/* Update Button */}
+                <div className="p-6">
+                  <h2 className="text-xl font-bold text-[#1a1f2e] mb-3">{job.title}</h2>
+                  <p className="text-gray-600 mb-4">{job.description}</p>
+                  <div className="space-y-2">
+                    <p className="text-sm text-gray-500">Location: {job.location}</p>
+                    <p className="text-sm text-gray-500">Eligibility: {job.eligibility}</p>
+                  </div>
+                </div>
+                
+                <div className="bg-gray-50 px-6 py-4 flex justify-between items-center">
                   <Link
                     to={`/update-job/${job.id}`}
-                    className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition duration-300"
+                    className="bg-[#ff9800] text-white px-4 py-2 rounded hover:bg-[#f57c00] transition duration-200"
                   >
                     Update
                   </Link>
-
-                  {/* Delete Button */}
                   <button
                     onClick={() => handleDelete(job.id)}
-                    className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
+                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200"
                   >
                     Delete
                   </button>
@@ -162,78 +165,89 @@ const AdminJobManagement = () => {
               </div>
             ))}
           </div>
-        </div>
 
-        {/* ✅ Export to Excel Button */}
-        <div className="flex justify-center my-6">
-          <button
-            onClick={handleDownloadExcel}
-            className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition"
-          >
-            📥 Download Job Applications (Excel)
-          </button>
-        </div>
+          {/* Excel Download Button */}
+          <div className="flex justify-center mb-8">
+            <button
+              onClick={handleDownloadExcel}
+              className="bg-[#1a1f2e] text-white px-6 py-3 rounded-lg hover:bg-[#2a2f3e] transition duration-200 flex items-center space-x-2"
+            >
+              <span>📥</span>
+              <span>Download Job Applications (Excel)</span>
+            </button>
+          </div>
 
-        {/* Applications List Section */}
-        <div className="p-8 mt-8">
-          <div className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 p-6 rounded-lg shadow-lg">
-            <h2 className="text-3xl font-bold text-white mb-4 text-center">
-              Candidates Applied for Jobs
-            </h2>
+          {/* Applications Table */}
+          <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
+            <div className="bg-[#1a1f2e] p-4">
+              <h2 className="text-xl font-bold text-white text-center">
+                Candidates Applied for Jobs
+              </h2>
+            </div>
 
-            <div className="overflow-x-auto mt-4">
-              <table className="min-w-full bg-white shadow-md rounded-lg border-collapse">
-                <thead className="bg-blue-600 text-white">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-[#1a1f2e] text-white">
                   <tr>
-                    <th className="py-3 px-6 text-left">Job Title</th>
-                    <th className="py-3 px-6 text-left">Email</th>
-                    <th className="py-3 px-6 text-left">Phone Number</th>
-                    <th className="py-3 px-6 text-left">CV</th>
+                    <th className="px-6 py-3 text-left">Full Name</th>
+                    <th className="px-6 py-3 text-left">Job Title</th>
+                    <th className="px-6 py-3 text-left">Email</th>
+                    <th className="px-6 py-3 text-left">Phone Number</th>
+                    <th className="px-6 py-3 text-left">Actions</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-gray-200">
                   {applications.map((application) => (
-                    <tr key={application.id} className="border-b hover:bg-grey-100">
-                      <td className="py-3 px-6 text-black">{application.full_name}</td>
-                      <td className="py-3 px-6 text-black">{application.job_title}</td>
-                      <td className="py-3 px-6 text-black">{application.email}</td>
-                      <td className="py-3 px-6 text-black">{application.phone_number}</td>
-                      <td className="py-3 px-6 text-black">
-                        <button
-                          onClick={() => openCVModal(application.cv)}
-                          className="text-blue-600 hover:text-blue-800"
-                        >
-                          View CV
-                        </button>
-
-                        {/* Download CV Button */}
-                        <a href={`http://127.0.0.1:8000${application.cv}`} className="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600 transition" download>
-                          ⬇ Download CV
-                        </a>
+                    <tr key={application.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4">{application.full_name}</td>
+                      <td className="px-6 py-4">{application.job_title}</td>
+                      <td className="px-6 py-4">{application.email}</td>
+                      <td className="px-6 py-4">{application.phone_number}</td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center space-x-3">
+                          <button
+                            onClick={() => openCVModal(application.cv)}
+                            className="text-[#ff9800] hover:text-[#f57c00] font-medium"
+                          >
+                            View CV
+                          </button>
+                          <a
+                            href={`http://127.0.0.1:8000${application.cv}`}
+                            className="bg-[#ff9800] text-white px-3 py-1 rounded hover:bg-[#f57c00] transition duration-200 flex items-center space-x-1"
+                            download
+                          >
+                            <span>⬇</span>
+                            <span>Download</span>
+                          </a>
+                        </div>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-            </div>    
+            </div>
           </div>
         </div>
 
-        {/* Modal for CV */}
+        {/* CV Modal */}
         {isModalOpen && (
-          <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-8 rounded-lg shadow-lg max-w-4xl w-full">
-              <button
-                onClick={closeModal}
-                className="absolute top-4 right-4 text-black hover:text-gray-700"
-              >
-                X
-              </button>
-              <h2 className="text-2xl font-bold mb-6 text-center">View CV</h2>
-              <div className="flex justify-center">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full m-4">
+              <div className="flex justify-between items-center p-6 border-b">
+                <h2 className="text-2xl font-bold text-[#1a1f2e]">View CV</h2>
+                <button
+                  onClick={closeModal}
+                  className="text-gray-500 hover:text-gray-700 transition duration-200"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <div className="p-6">
                 <iframe
                   src={selectedCV}
-                  className="w-full h-96 border-2 border-gray-300"
+                  className="w-full h-96 border-2 border-gray-200 rounded"
                   title="CV"
                 ></iframe>
               </div>
