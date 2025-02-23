@@ -10,6 +10,7 @@ const AdminJobManagement = () => {
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCV, setSelectedCV] = useState(null);
+  const [sidebarWidth, setSidebarWidth] = useState("w-60"); // Default expanded state
 
   // Fetch jobs
   useEffect(() => {
@@ -92,11 +93,16 @@ const AdminJobManagement = () => {
     setSelectedCV(null);
   };
 
+  // Handle sidebar state change
+  const handleSidebarChange = (isExpanded) => {
+    setSidebarWidth(isExpanded ? "w-60" : "w-20");
+  };
+
   if (loading) {
     return (
       <div className="flex min-h-screen bg-white">
-        <Sidebar />
-        <div className="flex-1 flex items-center justify-center">
+        <Sidebar onStateChange={handleSidebarChange} />
+        <div className={`flex-1 ${sidebarWidth} flex items-center justify-center transition-all duration-300`}>
           <div className="text-center">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#1a1f2e] mb-4"></div>
             <div className="text-[#1a1f2e] text-lg font-semibold">Loading...</div>
@@ -109,8 +115,8 @@ const AdminJobManagement = () => {
   if (error) {
     return (
       <div className="flex min-h-screen bg-white">
-        <Sidebar />
-        <div className="flex-1 flex items-center justify-center">
+        <Sidebar onStateChange={handleSidebarChange} />
+        <div className={`flex-1 ${sidebarWidth} flex items-center justify-center transition-all duration-300`}>
           <div className="text-[#1a1f2e] text-lg font-semibold">{error}</div>
         </div>
       </div>
@@ -119,11 +125,11 @@ const AdminJobManagement = () => {
 
   return (
     <div className="flex min-h-screen bg-white">
-      <Sidebar />
+      <Sidebar onStateChange={handleSidebarChange} />
       
-      <div className="flex-1">
+      <div className={`flex-1 transition-all duration-300 ${sidebarWidth === "w-60" ? "ml-2" : "ml-2"}`}>
         {/* Header */}
-        <div className="bg-[#1a1f2e] text-white py-8 px-6">
+        <div className=" bg-slate-800 text-white py-8 px-6">
           <h1 className="text-3xl md:text-4xl font-bold text-center">Admin Job Management</h1>
           <p className="text-gray-300 text-center mt-2 max-w-3xl mx-auto">
             Manage your posted jobs. Delete or update job listings as needed.
@@ -133,13 +139,13 @@ const AdminJobManagement = () => {
         {/* Main Content */}
         <div className="p-6">
           {/* Jobs Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             {jobs.map((job) => (
               <div
                 key={job.id}
-                className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300"
+                className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300 flex flex-col"
               >
-                <div className="p-6">
+                <div className="p-6 flex-grow">
                   <h2 className="text-xl font-bold text-[#1a1f2e] mb-3">{job.title}</h2>
                   <p className="text-gray-600 mb-4">{job.description}</p>
                   <div className="space-y-2">
@@ -148,7 +154,7 @@ const AdminJobManagement = () => {
                   </div>
                 </div>
                 
-                <div className="bg-gray-50 px-6 py-4 flex justify-between items-center">
+                <div className="bg-gray-50 px-6 py-4 flex justify-between items-center mt-auto">
                   <Link
                     to={`/update-job/${job.id}`}
                     className="bg-[#ff9800] text-white px-4 py-2 rounded hover:bg-[#f57c00] transition duration-200"
@@ -170,7 +176,7 @@ const AdminJobManagement = () => {
           <div className="flex justify-center mb-8">
             <button
               onClick={handleDownloadExcel}
-              className="bg-[#1a1f2e] text-white px-6 py-3 rounded-lg hover:bg-[#2a2f3e] transition duration-200 flex items-center space-x-2"
+              className=" bg-slate-800 text-white px-6 py-3 rounded-lg hover:bg-[#2a2f3e] transition duration-200 flex items-center space-x-2"
             >
               <span>📥</span>
               <span>Download Job Applications (Excel)</span>
@@ -179,7 +185,7 @@ const AdminJobManagement = () => {
 
           {/* Applications Table */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-            <div className="bg-[#1a1f2e] p-4">
+            <div className=" bg-slate-800 p-4">
               <h2 className="text-xl font-bold text-white text-center">
                 Candidates Applied for Jobs
               </h2>
@@ -187,7 +193,7 @@ const AdminJobManagement = () => {
 
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-[#1a1f2e] text-white">
+                <thead className=" bg-slate-800 text-white">
                   <tr>
                     <th className="px-6 py-3 text-left">Full Name</th>
                     <th className="px-6 py-3 text-left">Job Title</th>
