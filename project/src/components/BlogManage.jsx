@@ -28,13 +28,7 @@ const BlogManage = () => {
   // Handle Delete Blog
   const handleDelete = async (blogId) => {
     try {
-      const token = localStorage.getItem("access_token");
-      await axios.delete(`http://127.0.0.1:8000/delete-blog/${blogId}/`, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
-      });
-
+      await axios.delete(`http://127.0.0.1:8000/delete-blog/${blogId}/`);
       setBlogs(blogs.filter((blog) => blog.id !== blogId));
       alert("Blog deleted successfully!");
     } catch (err) {
@@ -65,8 +59,6 @@ const BlogManage = () => {
   // Handle Update Blog
   const handleUpdate = async () => {
     try {
-      const token = localStorage.getItem("access_token");
-
       const formDataToSend = new FormData();
       formDataToSend.append("title", formData.title);
       formDataToSend.append("content", formData.content);
@@ -76,7 +68,6 @@ const BlogManage = () => {
 
       await axios.put(`http://127.0.0.1:8000/update-blog/${editingBlog}/`, formDataToSend, {
         headers: {
-          "Authorization": `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });

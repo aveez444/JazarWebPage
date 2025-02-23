@@ -9,7 +9,6 @@ import AdminJobManagement from "./components/jobmanage";
 import BlogForm from "./components/BlogForm";
 import Footer from "./components/footer";
 import ContactPage from "./main/contactPage";
-import FAQPage from "./main/FAQs";
 import UpdateJob from "./components/UpdateJob";
 import ApplyForm from "./components/ApplyForm";
 import CustomerList from "./components/customerData";
@@ -22,7 +21,7 @@ const App = () => {
       
 
         {/* Page Content */}
-        <div className="flex-1 p-6 bg-gray-100">
+        
           <Routes>
             <Route path="/career"element={<Career/>} />
             <Route path="/blogs"element={<BlogDisplay/>} />
@@ -42,7 +41,7 @@ const App = () => {
             <Route path="/blogstruc" element={<BlogForm/>} />
             <Route path="/footer" element={<Footer/>} />
             <Route path="/contact" element={<ContactPage/>} />
-            <Route path="/faq" element={<FAQPage/>} />
+            
             <Route path="/update-job/:jobId" element={<UpdateJob />} />
             <Route path="/apply/:Id" element={<ApplyForm/>} />
             <Route path="/contact-list" element={<CustomerList/>} />
@@ -51,7 +50,7 @@ const App = () => {
             
 
           </Routes>
-        </div>
+        
       
     </Router>
   );

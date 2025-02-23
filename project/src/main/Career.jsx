@@ -74,7 +74,7 @@ const Career = () => {
           Your browser does not support the video tag.
         </video>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white w-full px-6">
-          <h4 className="text-3xl font-semibold text-blue-300 drop-shadow-lg animate-fadeIn">Work at Jazar Tech</h4> 
+          <h4 className="text-3xl font-semibold text-gray-100 drop-shadow-lg animate-fadeIn">Work at Jazar Tech</h4> 
           <h1 className="text-7xl font-bold drop-shadow-lg animate-fadeIn mt-4">Join our team where innovation meets impact.</h1>
           <p className="text-lg mt-6 text-white-200 max-w-2xl mx-auto animate-slideUp">
             At Jazar Tech, we empower visionaries, problem-solvers, and pioneers to shape the future of technology. Whether you're a developer pushing the boundaries of AI, a strategist driving digital transformation, or a creative mind redefining user experiences—we have a place for you.
@@ -85,7 +85,7 @@ const Career = () => {
 
       {/* Job Listings Section */}
       <div className="w-full px-6 md:px-16 py-20 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 shadow-lg">
-        <h2 className="text-5xl font-extrabold text-center mb-14 bg-gradient-to-r from-black via-gray-700 to-black text-transparent bg-clip-text">
+        <h2 className="text-5xl font-extrabold text-center mb-14 bg-gradient-to-r from-black via-gray-900 to-black text-transparent bg-clip-text">
           EXPLORE OUR CURRENT JOB OPENINGS 
         </h2>
         <br></br>
@@ -127,7 +127,7 @@ const Career = () => {
 
       {/* Life at Jazar Tech Section */}
       <div className="w-full px-6 md:px-16 py-20 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 shadow-lg">
-        <h1 className="text-5xl font-extrabold text-center mb-14 bg-gradient-to-r from-black via-purple-500 to-black text-transparent bg-clip-text">
+        <h1 className="text-5xl font-extrabold text-center mb-14 bg-gradient-to-r from-black via-gray-900 to-black text-transparent bg-clip-text">
           Explore the community and Life at <br></br> JAZAR TECH SOLUTIONS
         </h1>
         <p className="text-lg text-gray-800 text-center max-w-4xl mx-auto mb-8">
@@ -142,7 +142,7 @@ const Career = () => {
 
     {/* How You Can Make a Difference Section */}
     <div className="w-full px-6 md:px-16 py-20 bg-white text-black text-center">
-      <h2 className="text-5xl font-extrabold bg-gradient-to-r from-black via-purple-500 to-black text-transparent bg-clip-text mb-14">
+      <h2 className="text-5xl font-extrabold bg-gradient-to-r from-black via-gray-900 to-black text-transparent bg-clip-text mb-14">
         HOW YOU CAN MAKE A DIFFERENCE AT JAZAR TECH
       </h2>
 
@@ -225,7 +225,7 @@ const Career = () => {
 
       {/* Our Values Section */}
       <div className="w-full px-6 md:px-16 py-20 bg-gray-50 text-black">
-        <h2 className="text-5xl font-extrabold text-center mb-14 bg-gradient-to-r from-black via-purple-500 to-black text-transparent bg-clip-text">
+        <h2 className="text-5xl font-extrabold text-center mb-14 bg-gradient-to-r from-black via-gray-900 to-black text-transparent bg-clip-text">
           OUR VALUES ARE PART OF EVERYTHING WE BUILD
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
@@ -275,7 +275,7 @@ const Career = () => {
         {/* Scroll to Top Button */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="absolute right-8 bottom-8 bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-3 rounded-full shadow-lg hover:scale-105 transition-all"
+          className="absolute right-8 bottom-8 bg-gradient-to-r from-gray-600 to-gray-900 text-white px-6 py-3 rounded-full shadow-lg hover:scale-105 transition-all"
         >
           Go to Top
         </button>

@@ -4,9 +4,15 @@ from google.oauth2 import id_token
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+import openpyxl
+from django.http import HttpResponse
+from django.utils.encoding import smart_str
 from django.contrib.auth.models import User
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.core.mail import send_mail
+from django.http import FileResponse, Http404
+from django.conf import settings
+import os
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.authentication import BaseAuthentication
 from .models import Job, JobApplication, Blog, ContactUs
@@ -144,8 +150,6 @@ class ContactUsAPIView(APIView):
 
 
 class UpdateJobAPIView(APIView):
-    permission_classes = [IsAuthenticated]  # Ensure authentication is required
-
     def put(self, request, job_id):
         try:
             job = Job.objects.get(id=job_id)
@@ -158,7 +162,6 @@ class UpdateJobAPIView(APIView):
             serializer.save()
             return Response({"detail": "Job updated successfully."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 
@@ -191,7 +194,6 @@ class ContactUsListAPIView(APIView):
             return Response({"detail": "No contact entries found."}, status=status.HTTP_404_NOT_FOUND)
 
 
-
 class DeleteBlogAPIView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
@@ -201,10 +203,7 @@ class DeleteBlogAPIView(APIView):
         blog.delete()
         return Response({"detail": "Blog deleted successfully."}, status=status.HTTP_200_OK)
 
-
 class UpdateBlogAPIView(APIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)  # Required for handling image uploads
 
     def put(self, request, blog_id):
@@ -219,3 +218,61 @@ class UpdateBlogAPIView(APIView):
             serializer.save()
             return Response({"detail": "Blog updated successfully."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+from urllib.parse import unquote
+
+def download_cv(request, user_id, filename):
+    """Download CV files correctly from the media directory."""
+    
+    filename = unquote(filename)  # Decode URL-encoded filenames
+    file_path = os.path.join(settings.MEDIA_ROOT, f'uploads/cv/{user_id}', filename)  # Adjusted path
+
+    if os.path.exists(file_path):
+        response = FileResponse(open(file_path, 'rb'), as_attachment=True)
+        response['Content-Disposition'] = f'attachment; filename="{smart_str(filename)}"'
+        return response
+    else:
+        raise Http404("File not found")
+    
+
+class JobApplicationExportView(APIView):
+    def get(self, request):
+        """Exports all job applications to an Excel file (without date filtering)."""
+
+        # ✅ Create a new workbook and sheet
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Job Applications"
+
+        # ✅ Define headers
+        headers = [
+            "Full Name", "Email", "Phone Number", "Location",
+            "Job Title", "Qualification", "Applied Date"
+        ]
+        for col_num, header in enumerate(headers, start=1):
+            ws.cell(row=1, column=col_num, value=header)
+
+        # ✅ Query job applications
+        queryset = JobApplication.objects.all().order_by("-applied_at")
+
+        # ✅ Fill Excel rows with data
+        row_index = 2
+        for app in queryset:
+            ws.cell(row=row_index, column=1, value=app.full_name)
+            ws.cell(row=row_index, column=2, value=app.email)
+            ws.cell(row=row_index, column=3, value=app.phone_number)
+            ws.cell(row=row_index, column=4, value=app.location)
+            ws.cell(row=row_index, column=5, value=app.job_title)
+            ws.cell(row=row_index, column=6, value=app.qualification)
+            ws.cell(row=row_index, column=7, value=app.applied_at.strftime("%Y-%m-%d %H:%M:%S"))
+            row_index += 1
+
+        # ✅ Prepare response
+        response = HttpResponse(
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        response['Content-Disposition'] = 'attachment; filename=Job_Applications.xlsx'
+
+        # ✅ Save the workbook to the response
+        wb.save(response)
+        return response
