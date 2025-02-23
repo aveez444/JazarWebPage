@@ -245,7 +245,7 @@ const Career = () => {
         {/* Scroll to Top Button */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="absolute right-8 bottom-8 bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-3 rounded-full shadow-lg hover:scale-105 transition-all"
+          className="absolute right-8 bottom-8 bg-gradient-to-r from-gray-600 to-gray-900 text-white px-6 py-3 rounded-full shadow-lg hover:scale-105 transition-all"
         >
           Go to Top
         </button>

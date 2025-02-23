@@ -18,8 +18,7 @@ class Job(models.Model):
 
 
 def cv_upload_path(instance, filename):
-    """Stores CV uploads inside a folder named after the applicant's email."""
-    return f"uploads/cv/{instance.email}/{filename}"
+    return f"uploads/cv/{instance.pk}/{filename}"
 
 class JobApplication(models.Model):
     full_name = models.CharField(max_length=255)
@@ -29,7 +28,7 @@ class JobApplication(models.Model):
     linkedin_profile = models.URLField(blank=True, null=True)
     job_title = models.CharField(max_length=255)
     qualification = models.CharField(max_length=255)
-    cv = models.FileField(upload_to=cv_upload_path)
+    cv = models.FileField(upload_to=cv_upload_path) 
 
     applied_at = models.DateTimeField(auto_now_add=True)  # Timestamp of submission
 

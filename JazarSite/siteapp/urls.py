@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LoginAPIView, JobPostAPIView, JobListAPIView, JobApplicationAPIView, BlogCreateAPIView, BlogListAPIView, DeleteJobAPIView, GoogleLoginAPIView, ContactUsAPIView,ContactUsListAPIView, UpdateJobAPIView, JobApplicationListAPIView, DeleteBlogAPIView, UpdateBlogAPIView
+from .views import LoginAPIView, JobPostAPIView, JobListAPIView, JobApplicationAPIView, BlogCreateAPIView,JobApplicationExportView, BlogListAPIView, DeleteJobAPIView, GoogleLoginAPIView, ContactUsAPIView,ContactUsListAPIView, UpdateJobAPIView, JobApplicationListAPIView, DeleteBlogAPIView, UpdateBlogAPIView
 
 urlpatterns = [
     path('login/', LoginAPIView.as_view(), name='login'),
@@ -17,5 +17,6 @@ urlpatterns = [
     path('contact-list/', ContactUsListAPIView.as_view(), name='contact-us-list'),
     path('delete-blog/<int:blog_id>/', DeleteBlogAPIView.as_view(), name='delete-blog'),
     path('update-blog/<int:blog_id>/', UpdateBlogAPIView.as_view(), name='update-blog'),
+    path("export-excel/", JobApplicationExportView.as_view(), name="export-excel"),
 ]
 

@@ -5,11 +5,11 @@ import Sidebar from "../components/sidebar"; // Import Sidebar
 
 const AdminJobManagement = () => {
   const [jobs, setJobs] = useState([]);
-  const [applications, setApplications] = useState([]); // Job applications state
+  const [applications, setApplications] = useState([]); // State to hold the job applications
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCV, setSelectedCV] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+  const [selectedCV, setSelectedCV] = useState(null); // State to store the selected CV URL
 
   // Fetch jobs
   useEffect(() => {
@@ -17,7 +17,9 @@ const AdminJobManagement = () => {
       try {
         const token = localStorage.getItem("access_token");
         const response = await axios.get("http://127.0.0.1:8000/list-jobs/", {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
         });
         setJobs(response.data);
       } catch (err) {
@@ -42,12 +44,38 @@ const AdminJobManagement = () => {
     fetchApplications();
   }, []);
 
+  // ✅ Handle Excel Download (Exports ALL job applications)
+  const handleDownloadExcel = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/export-excel/", {
+        responseType: "blob",
+      });
+
+      if (response.status === 404) {
+        alert("No applications found.");
+        return;
+      }
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Job_Applications.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      alert("Failed to download Excel file. Please try again.");
+    }
+  };
+
   // Handle job deletion
   const handleDelete = async (jobId) => {
     try {
       const token = localStorage.getItem("access_token");
       await axios.delete(`http://127.0.0.1:8000/delete-job/${jobId}/`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
       });
 
       setJobs(jobs.filter((job) => job.id !== jobId));
@@ -57,7 +85,7 @@ const AdminJobManagement = () => {
     }
   };
 
-  // Open CV Modal
+  // Open Modal to view CV
   const openCVModal = (cvUrl) => {
     setSelectedCV(cvUrl);
     setIsModalOpen(true);
@@ -88,7 +116,7 @@ const AdminJobManagement = () => {
   return (
     <div className="bg-gray-100 text-gray-900 min-h-screen flex">
       {/* Sidebar */}
-      <Sidebar />  
+      <Sidebar />  {/* Include Sidebar here */}
 
       {/* Main Content */}
       <div className="flex-1 p-6">
@@ -106,24 +134,27 @@ const AdminJobManagement = () => {
             {jobs.map((job) => (
               <div
                 key={job.id}
-                className="bg-white p-6 rounded-lg shadow-md border border-gray-300 hover:shadow-lg transition-all"
+                className="bg-white p-6 rounded-lg shadow-lg border-2 border-gray-200 hover:transform hover:scale-105 hover:shadow-2xl transition-all"
               >
-                <h2 className="text-xl font-bold text-blue-600 mb-2">{job.title}</h2>
-                <p className="text-sm text-gray-700 mb-2">{job.description}</p>
-                <p className="text-sm text-gray-500">Location: {job.location}</p>
-                <p className="text-sm text-gray-500">Eligibility: {job.eligibility}</p>
+                <h2 className="text-2xl font-bold text-blue-600 mb-4">{job.title}</h2>
+                <p className="text-sm text-gray-500 mb-4">{job.description}</p>
+                <p className="text-sm text-gray-600 mb-4">Location: {job.location}</p>
+                <p className="text-sm text-gray-600 mb-4">Eligibility: {job.eligibility}</p>
 
                 {/* Buttons */}
                 <div className="flex justify-between mt-4">
+                  {/* Update Button */}
                   <Link
                     to={`/update-job/${job.id}`}
-                    className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition"
+                    className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition duration-300"
                   >
                     Update
                   </Link>
+
+                  {/* Delete Button */}
                   <button
                     onClick={() => handleDelete(job.id)}
-                    className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
+                    className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
                   >
                     Delete
                   </button>
@@ -133,10 +164,22 @@ const AdminJobManagement = () => {
           </div>
         </div>
 
-        {/* Applications List */}
-        <div className="p-6 mt-6">
-          <div className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold text-white text-center">Candidates Applied for Jobs</h2>
+        {/* ✅ Export to Excel Button */}
+        <div className="flex justify-center my-6">
+          <button
+            onClick={handleDownloadExcel}
+            className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition"
+          >
+            📥 Download Job Applications (Excel)
+          </button>
+        </div>
+
+        {/* Applications List Section */}
+        <div className="p-8 mt-8">
+          <div className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 p-6 rounded-lg shadow-lg">
+            <h2 className="text-3xl font-bold text-white mb-4 text-center">
+              Candidates Applied for Jobs
+            </h2>
 
             <div className="overflow-x-auto mt-4">
               <table className="min-w-full bg-white shadow-md rounded-lg border-collapse">
@@ -150,30 +193,36 @@ const AdminJobManagement = () => {
                 </thead>
                 <tbody>
                   {applications.map((application) => (
-                    <tr key={application.id} className="border-b hover:bg-gray-200">
-                      <td className="py-3 px-6">{application.job_title}</td>
-                      <td className="py-3 px-6">{application.email}</td>
-                      <td className="py-3 px-6">{application.phone_number}</td>
-                      <td className="py-3 px-6">
+                    <tr key={application.id} className="border-b hover:bg-grey-100">
+                      <td className="py-3 px-6 text-black">{application.full_name}</td>
+                      <td className="py-3 px-6 text-black">{application.job_title}</td>
+                      <td className="py-3 px-6 text-black">{application.email}</td>
+                      <td className="py-3 px-6 text-black">{application.phone_number}</td>
+                      <td className="py-3 px-6 text-black">
                         <button
                           onClick={() => openCVModal(application.cv)}
-                          className="text-blue-600 hover:underline"
+                          className="text-blue-600 hover:text-blue-800"
                         >
                           View CV
                         </button>
+
+                        {/* Download CV Button */}
+                        <a href={`http://127.0.0.1:8000${application.cv}`} className="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600 transition" download>
+                          ⬇ Download CV
+                        </a>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-            </div>
+            </div>    
           </div>
         </div>
 
-        {/* CV Modal */}
+        {/* Modal for CV */}
         {isModalOpen && (
           <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
+            <div className="bg-white p-8 rounded-lg shadow-lg max-w-4xl w-full">
               <button
                 onClick={closeModal}
                 className="absolute top-4 right-4 text-black hover:text-gray-700"
