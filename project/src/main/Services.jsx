@@ -81,11 +81,13 @@ const services = [
     image: mobileAppImage,
   },
   {
-    title: "IT Consulting & Strategy",
-    description: "Expert guidance to optimize business IT infrastructure.",
+    title: "IT Consulting & Recruitment",
+    description: "Optimizing IT infrastructure & delivering top tech talent globally.",
     details: [
-      "IT Strategy Development: Creating a roadmap for businesses to align their IT infrastructure with business goals and drive long-term success.",
-      "Cloud Strategy: Helping businesses determine the best cloud strategy, including hybrid, multi-cloud, and single-cloud options, to meet their needs.",
+      "IT Strategy: Aligning IT infrastructure with business goals for long-term success.",
+      "Cloud Solutions: Tailored hybrid, multi-cloud & single-cloud strategies.",
+      "Global IT Recruitment: Hiring skilled professionals for India, USA & Gulf regions.",
+      "Payroll Management: End-to-end salary processing, compliance & benefits handling."
     ],
     image: itConsultingImage,
   },
