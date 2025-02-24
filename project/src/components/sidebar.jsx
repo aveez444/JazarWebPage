@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { 
   Home, Briefcase, Calendar, Users, Settings, HelpCircle, FileText, 
-  Menu, X, ChevronLeft, ChevronRight 
+  Menu, X, ChevronLeft, ChevronRight ,Mail,FilePen
 } from "lucide-react";
 
 const Sidebar = () => {
@@ -14,11 +14,11 @@ const Sidebar = () => {
 
   const menuItems = [
     { name: "Dashboard", icon: <Home size={20} />, path: "/" },
-    { name: "Inquiry", icon: <Briefcase size={20} />, path: "/contact-list" },
-    { name: "Jobs", icon: <Briefcase size={20} />, path: "/jobs" },
+    { name: "Inquiry", icon: <Mail size={20} />, path: "/contact-list" },
+    { name: "Post Jobs", icon: <Briefcase size={20} />, path: "/jobs" },
     { name: "Create Blog", icon: <FileText size={20} />, path: "/blogstruc" },
     { name: "JobManage", icon: <Settings size={20} />, path: "/jobmanage" },
-    { name: "Blog Update", icon: <FileText size={20} />, path: "/blog-manage" },
+    { name: "Blog Update", icon: <FilePen size={20} />, path: "/blog-manage" },
   ];
 
   return (
