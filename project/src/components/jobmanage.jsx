@@ -83,10 +83,10 @@ const AdminJobManagement = () => {
 
   // Handle View CV in Modal
   const openCVModal = (cvUrl) => {
-    setSelectedCV(`http://127.0.0.1:8000${decodeURIComponent(cvUrl)}`);
-    setIsModalOpen(true);
+    const fileUrl = `http://127.0.0.1:8000${decodeURIComponent(cvUrl)}`;
+    window.open(fileUrl, "_blank"); // Open in a new tab
   };
-
+  
   // Close Modal
   const closeModal = () => {
     setIsModalOpen(false);
@@ -122,6 +122,34 @@ const AdminJobManagement = () => {
       </div>
     );
   }
+
+  const handleDownloadCV = async (cvUrl) => {
+    try {
+      const fileUrl = `http://127.0.0.1:8000${decodeURIComponent(cvUrl)}`;
+      
+      // Fetch the file as a blob
+      const response = await fetch(fileUrl);
+      if (!response.ok) throw new Error("Failed to fetch file.");
+  
+      const blob = await response.blob();
+      
+      // Create a download link
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.setAttribute("download", "Candidate_CV.pdf"); // Forces download with a filename
+      
+      // Append to document, trigger click, and remove it
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  
+      alert("CV downloaded successfully! Check your Downloads folder.");
+    } catch (error) {
+      alert("Error downloading CV. Please try again.");
+    }
+  };
+  
+  
 
   return (
     <div className="flex min-h-screen bg-white">
@@ -217,14 +245,15 @@ const AdminJobManagement = () => {
                           >
                             View CV
                           </button>
-                          <a
-                            href={`http://127.0.0.1:8000${application.cv}`}
-                            className="bg-[#ff9800] text-white px-3 py-1 rounded hover:bg-[#f57c00] transition duration-200 flex items-center space-x-1"
-                            download
-                          >
-                            <span>⬇</span>
-                            <span>Download</span>
-                          </a>
+                          <button
+                          onClick={() => handleDownloadCV(application.cv)}
+                          className="bg-[#ff9800] text-white px-3 py-1 rounded hover:bg-[#f57c00] transition duration-200 flex items-center space-x-1"
+                        >
+                          <span>⬇</span>
+                          <span>Download</span>
+                        </button>
+
+
                         </div>
                       </td>
                     </tr>
