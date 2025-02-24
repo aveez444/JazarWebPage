@@ -11,6 +11,7 @@ const AdminJobManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCV, setSelectedCV] = useState(null);
   const [sidebarWidth, setSidebarWidth] = useState("w-60"); // Default expanded state
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Fetch jobs
   useEffect(() => {
@@ -42,6 +43,17 @@ const AdminJobManagement = () => {
     };
     fetchApplications();
   }, []);
+
+  // Filter applications based on search term
+  const filteredApplications = applications.filter((application) => {
+    const searchStr = searchTerm.toLowerCase();
+    return (
+      application.full_name.toLowerCase().includes(searchStr) ||
+      application.job_title.toLowerCase().includes(searchStr) ||
+      application.email.toLowerCase().includes(searchStr) ||
+      application.phone_number.toLowerCase().includes(searchStr)
+    );
+  });
 
   // Handle Excel Download
   const handleDownloadExcel = async () => {
@@ -98,31 +110,6 @@ const AdminJobManagement = () => {
     setSidebarWidth(isExpanded ? "w-60" : "w-20");
   };
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen bg-white">
-        <Sidebar onStateChange={handleSidebarChange} />
-        <div className={`flex-1 ${sidebarWidth} flex items-center justify-center transition-all duration-300`}>
-          <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#1a1f2e] mb-4"></div>
-            <div className="text-[#1a1f2e] text-lg font-semibold">Loading...</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex min-h-screen bg-white">
-        <Sidebar onStateChange={handleSidebarChange} />
-        <div className={`flex-1 ${sidebarWidth} flex items-center justify-center transition-all duration-300`}>
-          <div className="text-[#1a1f2e] text-lg font-semibold">{error}</div>
-        </div>
-      </div>
-    );
-  }
-
   const handleDownloadCV = async (cvUrl) => {
     try {
       const fileUrl = `http://127.0.0.1:8000${decodeURIComponent(cvUrl)}`;
@@ -148,16 +135,45 @@ const AdminJobManagement = () => {
       alert("Error downloading CV. Please try again.");
     }
   };
-  
-  
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen bg-white">
+        <div className="sticky top-0 h-screen">
+          <Sidebar onStateChange={handleSidebarChange} />
+        </div>
+        <div className={`flex-1 ${sidebarWidth} flex items-center justify-center transition-all duration-300`}>
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#1a1f2e] mb-4"></div>
+            <div className="text-[#1a1f2e] text-lg font-semibold">Loading...</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex min-h-screen bg-white">
+        <div className="sticky top-0 h-screen">
+          <Sidebar onStateChange={handleSidebarChange} />
+        </div>
+        <div className={`flex-1 ${sidebarWidth} flex items-center justify-center transition-all duration-300`}>
+          <div className="text-[#1a1f2e] text-lg font-semibold">{error}</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen bg-white">
-      <Sidebar onStateChange={handleSidebarChange} />
+      <div className="sticky top-0 h-screen">
+        <Sidebar onStateChange={handleSidebarChange} />
+      </div>
       
       <div className={`flex-1 transition-all duration-300 ${sidebarWidth === "w-60" ? "ml-2" : "ml-2"}`}>
         {/* Header */}
-        <div className=" bg-slate-800 text-white py-8 px-6">
+        <div className="bg-slate-800 text-white py-8 px-6">
           <h1 className="text-3xl md:text-4xl font-bold text-center">Admin Job Management</h1>
           <p className="text-gray-300 text-center mt-2 max-w-3xl mx-auto">
             Manage your posted jobs. Delete or update job listings as needed.
@@ -204,7 +220,7 @@ const AdminJobManagement = () => {
           <div className="flex justify-center mb-8">
             <button
               onClick={handleDownloadExcel}
-              className=" bg-slate-800 text-white px-6 py-3 rounded-lg hover:bg-[#2a2f3e] transition duration-200 flex items-center space-x-2"
+              className="bg-slate-800 text-white px-6 py-3 rounded-lg hover:bg-[#2a2f3e] transition duration-200 flex items-center space-x-2"
             >
               <span>📥</span>
               <span>Download Job Applications (Excel)</span>
@@ -213,15 +229,26 @@ const AdminJobManagement = () => {
 
           {/* Applications Table */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-            <div className=" bg-slate-800 p-4">
+            <div className="bg-slate-800 p-4">
               <h2 className="text-xl font-bold text-white text-center">
                 Candidates Applied for Jobs
               </h2>
             </div>
 
+            {/* Search Bar */}
+            <div className="p-4 bg-white border-b border-gray-200">
+              <input
+                type="text"
+                placeholder="Search by name, job title, email, or phone number..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-800 focus:border-transparent"
+              />
+            </div>
+
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className=" bg-slate-800 text-white">
+                <thead className="bg-slate-800 text-white">
                   <tr>
                     <th className="px-6 py-3 text-left">Full Name</th>
                     <th className="px-6 py-3 text-left">Job Title</th>
@@ -231,7 +258,7 @@ const AdminJobManagement = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {applications.map((application) => (
+                  {filteredApplications.map((application) => (
                     <tr key={application.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4">{application.full_name}</td>
                       <td className="px-6 py-4">{application.job_title}</td>
@@ -246,14 +273,12 @@ const AdminJobManagement = () => {
                             View CV
                           </button>
                           <button
-                          onClick={() => handleDownloadCV(application.cv)}
-                          className="bg-[#ff9800] text-white px-3 py-1 rounded hover:bg-[#f57c00] transition duration-200 flex items-center space-x-1"
-                        >
-                          <span>⬇</span>
-                          <span>Download</span>
-                        </button>
-
-
+                            onClick={() => handleDownloadCV(application.cv)}
+                            className="bg-[#ff9800] text-white px-3 py-1 rounded hover:bg-[#f57c00] transition duration-200 flex items-center space-x-1"
+                          >
+                            <span>⬇</span>
+                            <span>Download</span>
+                          </button>
                         </div>
                       </td>
                     </tr>

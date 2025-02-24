@@ -109,8 +109,7 @@ class BlogListAPIView(APIView):
 
 
 class DeleteJobAPIView(APIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+
 
     def delete(self, request, job_id):
         try:
@@ -195,8 +194,6 @@ class ContactUsListAPIView(APIView):
 
 
 class DeleteBlogAPIView(APIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def delete(self, request, blog_id):
         blog = get_object_or_404(Blog, id=blog_id)
