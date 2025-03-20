@@ -35,10 +35,10 @@ const TopNav = () => {
         <div className="hidden md:flex space-x-6">
           <Link to="/" className="hover:text-green-400 transition">Home</Link>
           <Link to="/services" className="hover:text-green-400 transition">Services</Link>
-          <Link to="/faq" className="hover:text-green-400 transition">FAQs</Link>
           <Link to="/contact" className="hover:text-green-400 transition">Contact</Link>
           <Link to="/career" className="hover:text-green-400 transition">Career</Link>
           <Link to="/blogs" className="hover:text-green-400 transition">Blog</Link>
+          <Link to="/faq" className="hover:text-green-400 transition">FAQs</Link>
         </div>
 
         {/* Right Section: Buttons (Hidden on Mobile) */}

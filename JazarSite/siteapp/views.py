@@ -122,6 +122,7 @@ class DeleteJobAPIView(APIView):
 
 
 
+
 class ContactUsAPIView(APIView):
     """
     API view to handle the submission of the contact form.
@@ -136,16 +137,24 @@ class ContactUsAPIView(APIView):
 
             # Send email to the admin
             subject = f"New message from {contact.first_name} {contact.last_name}"
-            message = f"First Name: {contact.first_name}\nLast Name: {contact.last_name}\nContact Number: {contact.contact_number}\nEmail: {contact.email}\nMessage: {contact.message}"
-            from_email = 'your_email@example.com'  # Replace with your email
-            to_email = 'your_email@example.com'    # Replace with the email where you want to receive the form submissions
+            message = f"""
+            First Name: {contact.first_name}
+            Last Name: {contact.last_name}
+            Contact Number: {contact.contact_number}
+            Email: {contact.email}
+            Message: {contact.message}
+            """
+            
+            from_email = settings.EMAIL_HOST_USER  # Use the configured email
+            to_email = settings.EMAIL_HOST_USER   # Ensure this is your admin email
 
-            send_mail(subject, message, from_email, [to_email])
-
-            return Response({"message": "Your message has been sent successfully!"}, status=status.HTTP_201_CREATED)
+            try:
+                send_mail(subject, message, from_email, [to_email])
+                return Response({"message": "Your message has been sent successfully!"}, status=status.HTTP_201_CREATED)
+            except Exception as e:
+                return Response({"error": f"Failed to send email: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class UpdateJobAPIView(APIView):
